@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import spring.noticeboard.domain.member.Member;
 import spring.noticeboard.repository.member.MemberRepository;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 @Service
 @RequiredArgsConstructor
 public class LoginService {
@@ -15,5 +18,13 @@ public class LoginService {
         return memberRepository.findByLoginId(loginId)
                 .filter(m -> m.getPassword().equals(password))
                 .orElse(null);
+    }
+
+    public void logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+
+        if (session != null) {
+            session.invalidate();
+        }
     }
 }

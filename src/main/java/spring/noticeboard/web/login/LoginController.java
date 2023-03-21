@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import spring.noticeboard.domain.member.Member;
 import spring.noticeboard.service.login.LoginService;
+import spring.noticeboard.web.SessionConst;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Slf4j
 @Controller
@@ -19,12 +23,12 @@ public class LoginController {
     private final LoginService loginService;
 
     @GetMapping("/login")
-    public String login(@ModelAttribute LoginForm form) {
+    public String loginForm(@ModelAttribute LoginForm form) {
         return "login/login";
     }
 
     @PostMapping("/login")
-    public String login(@Validated @ModelAttribute LoginForm form, BindingResult bindingResult) {
+    public String login(@Validated @ModelAttribute LoginForm form, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
             return "login/login";
@@ -38,6 +42,16 @@ public class LoginController {
             log.info("errors={}", bindingResult);
             return "login/login";
         }
+
+        HttpSession session = request.getSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER_ID, loginMember.getId());
+
+        return "redirect:/";
+    }
+
+    @PostMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        loginService.logout(request);
 
         return "redirect:/";
     }
