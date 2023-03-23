@@ -1,5 +1,6 @@
 package spring.noticeboard.repository.member;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import spring.noticeboard.domain.member.Member;
 
@@ -10,6 +11,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
+@Slf4j
 @Repository
 public class MemoryMemberRepository implements MemberRepository {
 
@@ -20,6 +22,7 @@ public class MemoryMemberRepository implements MemberRepository {
     public Member save(Member member) {
         member.setId(sequence.incrementAndGet());
         store.put(member.getId(), member);
+        log.info("saved member={}", member);
         return member;
     }
 
