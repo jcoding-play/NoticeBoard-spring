@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+      .b-example-divider {
+        height: 3rem;
+        background-color: rgba(0, 0, 0, 0.1);
+        border: solid rgba(0, 0, 0, 0.15);
+        border-width: 1px 0;
+        box-shadow: inset 0 0.5em 1.5em rgba(0, 0, 0, 0.1),
+          inset 0 0.125em 0.5em rgba(0, 0, 0, 0.15);
+      }
+      .form-group {
+        margin-bottom: 10px;
+      }
+      .field-error {
+        border-color: #dc3545;
+        color: #dc3545;
+      }
+    </style>
+</head>
+<body>
+<header class="p-3 text-bg-dark">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+                    <use xlink:href="#bootstrap" />
+                </svg>
+            </a>
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li>
+                    <a th:href="@{/}" href="boards.html" class="nav-link px-2 text-white">Home</a>
+                </li>
+            </ul>
+
+            <div class="text-end">
+                <form action="" th:action="@{/logout}" method="post">
+                    <button class="btn btn-warning" type="submit">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="b-example-divider"></div>
+
+<div class="container" style="max-width: 1000px">
+    <div class="py-5 text-center">
+        <h1>글 작성하기</h1>
+    </div>
+
+    <form th:action method="post" th:object="${form}" enctype="multipart/form-data">
+        <div class="form-group row" style="margin-bottom: 10px">
+            <label for="inputTitle" class="col-sm-2 col-form-label"><strong>제목</strong></label>
+            <div class="col-sm-10">
+                <input type="text" name="title" class="form-control"
+                       th:errorclass="field-error" id="inputTitle" th:value="*{title}"/>
+                <div class="field-error" th:errors="*{title}"></div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputAuthor" class="col-sm-2 col-form-label"><strong>작성자</strong></label>
+            <div class="col-sm-10">
+                <input type="text" name="author" class="form-control"
+                       th:errorclass="field-error" id="inputAuthor" th:value="*{author}"/>
+                <div class="field-error" th:errors="*{author}"></div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputContent" class="col-sm-2 col-form-label"><strong>내용</strong></label>
+            <div class="col-sm-10">
+                <textarea type="text" name="content" class="form-control"
+                          th:errorclass="field-error" id="inputContent" th:value="*{content}" style="height: 8em"></textarea>
+                <div class="field-error" th:errors="*{content}"></div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputFile" class="col-sm-2 col-form-label"><strong>첨부 파일</strong></label>
+            <div class="col-sm-10">
+                <div class="custom-file" id="inputFile">
+                    <input name="file" multiple="multiple" type="file" class="custom-file-input" id="customFile"/>
+                </div>
+            </div>
+        </div>
+        <div class="text-end">
+            <button class="btn btn-primary me-2" type="submit">저장</button>
+            <button class="btn btn-secondary float-end"
+                    th:onclick="|location.href='@{/}'|"
+                    onclick="location.href='boards.html'" type="button">
+                취소
+            </button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
