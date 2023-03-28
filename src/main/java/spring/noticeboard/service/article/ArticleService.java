@@ -11,6 +11,7 @@ import spring.noticeboard.repository.article.ArticleRepository;
 import spring.noticeboard.service.member.MemberService;
 import spring.noticeboard.web.SessionConst;
 import spring.noticeboard.web.article.form.ArticleSaveForm;
+import spring.noticeboard.web.article.form.ArticleUpdateForm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -47,6 +48,22 @@ public class ArticleService {
 
     public List<Article> findArticles() {
         return articleRepository.findAll();
+    }
+
+    public void update(Long id, ArticleUpdateForm form) {
+
+        findArticle(id)
+                .ifPresent(article -> {
+                    article.setTitle(form.getTitle());
+                    article.setAuthor(form.getAuthor());
+                    article.setContent(form.getContent());
+                    try {
+                        article.setUploadFiles(fileStore.storeFiles(form.getMultipartFiles()));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    article.setLocalDateTime(LocalDateTime.now());
+                });
     }
 
     private String getLoginId(HttpServletRequest request) {

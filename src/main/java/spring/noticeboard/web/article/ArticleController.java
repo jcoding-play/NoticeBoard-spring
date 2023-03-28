@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import spring.noticeboard.domain.article.Article;
 import spring.noticeboard.service.article.ArticleService;
+import spring.noticeboard.service.member.MemberService;
+import spring.noticeboard.web.SessionConst;
 import spring.noticeboard.web.article.form.ArticleSaveForm;
+import spring.noticeboard.web.article.form.ArticleUpdateForm;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -22,6 +25,7 @@ import java.io.IOException;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final MemberService memberService;
 
     @GetMapping("/add")
     public String addArticle(@ModelAttribute("form") ArticleSaveForm form) {
@@ -44,11 +48,44 @@ public class ArticleController {
     }
 
     @GetMapping("/{id}")
-    public String article(@PathVariable Long id, Model model) {
+    public String article(@PathVariable Long id, Model model,
+                          @SessionAttribute(name = SessionConst.LOGIN_MEMBER_ID, required = false) Long memberId) {
 
         articleService.findArticle(id)
-                .ifPresent(article -> model.addAttribute("article", article));
+                .ifPresent(article -> {
+                    model.addAttribute("article", article);
+                    memberService.findOne(memberId)
+                            .ifPresent(member -> {
+                                if (member.getLoginId().equals(article.getCreateBy())) {
+                                    model.addAttribute("status", true);
+                                }
+                            });
+                });
 
         return "article/article";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String editForm(@PathVariable Long id, Model model) {
+
+        articleService.findArticle(id)
+                .ifPresent(article -> model.addAttribute("form", article));
+
+        return "article/updateForm";
+    }
+
+    @PostMapping("/{id}/edit")
+    public String edit(@Validated @ModelAttribute("form") ArticleUpdateForm form, BindingResult bindingResult,
+                       @PathVariable Long id, RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            log.info("errors={}", bindingResult);
+            return "article/updateForm";
+        }
+
+        articleService.update(id, form);
+        redirectAttributes.addAttribute("id", id);
+
+        return "redirect:/article/{id}";
     }
 }
