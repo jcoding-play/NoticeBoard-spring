@@ -66,6 +66,10 @@ public class ArticleService {
                 });
     }
 
+    public void delete(Long id) {
+        articleRepository.delete(id);
+    }
+
     private String getLoginId(HttpServletRequest request) {
 
         HttpSession session = request.getSession(false);
