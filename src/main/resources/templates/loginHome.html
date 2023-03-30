@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <link th:href="@{/css/bootstrap.min.css}"
+            href="../css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+      .b-example-divider {
+        height: 3rem;
+        background-color: rgba(0, 0, 0, 0.1);
+        border: solid rgba(0, 0, 0, 0.15);
+        border-width: 1px 0;
+        box-shadow: inset 0 0.5em 1.5em rgba(0, 0, 0, 0.1),
+          inset 0 0.125em 0.5em rgba(0, 0, 0, 0.15);
+      }
+    </style>
+</head>
+<body>
+<header class="p-3 text-bg-dark">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+                    <use xlink:href="#bootstrap" />
+                </svg>
+            </a>
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li>
+                    <a th:href="@{/}" href="home.html" class="nav-link px-2 text-white" th:text="|${member.username}님 안녕하세요.|">Home</a>
+                </li>
+            </ul>
+
+            <div class="text-end">
+                <form action="" th:action="@{/logout}" method="post">
+                    <button class="btn btn-warning" type="submit">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="b-example-divider"></div>
+
+<div class="container" style="max-width: 1000px">
+    <div class="py-5 text-center">
+        <h1>나만의 게시판</h1>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-secondary float-end"
+                    th:onclick="|location.href='@{/article/add}'|"
+                    onclick="location.href='notice/addNotice.html'" type="button">
+                게시글 등록
+            </button>
+        </div>
+    </div>
+
+    <hr class="my-4" />
+    <div>
+        <table class="table table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th width="10%">#</th>
+                <th width="30%">제목</th>
+                <th width="30%">작성자</th>
+                <th width="30%">작성일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="article, articleStat : ${articles}">
+                <td th:text="${articleStat.count}"></td>
+                <td><a th:href="@{/article/{id}(id=${article.id})}" th:text="${article.title}"></a></td>
+                <td th:text="${article.author}"></td>
+                <td th:text="${#temporals.format(article.localDateTime, 'yyyy-MM-dd HH:mm')}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- /container -->
+</body>
+</html>
