@@ -3,7 +3,6 @@ package spring.noticeboard.domain.article;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 public class Article {
@@ -14,15 +13,15 @@ public class Article {
     private String title;
     private String author;
     private String content;
-    private List<UploadFile> uploadFiles;
+    private UploadFile attachFile;
     private LocalDateTime localDateTime;
 
-    public Article(String createBy, String title, String author, String content, List<UploadFile> uploadFiles, LocalDateTime localDateTime) {
+    public Article(String createBy, String title, String author, String content, UploadFile attachFile, LocalDateTime localDateTime) {
         this.createBy = createBy;
         this.title = title;
         this.author = author;
         this.content = content;
-        this.uploadFiles = uploadFiles;
+        this.attachFile = attachFile;
         this.localDateTime = localDateTime;
     }
 }

@@ -42,7 +42,7 @@ public class MemoryArticleRepository implements ArticleRepository {
             article.setTitle(updateForm.getTitle());
             article.setAuthor(updateForm.getAuthor());
             article.setContent(updateForm.getContent());
-            article.setUploadFiles(updateForm.getUploadFiles());
+            article.setAttachFile(updateForm.getAttachFile());
         });
     }
 
