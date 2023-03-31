@@ -17,6 +17,10 @@ public class FileStore {
     @Value("${file.dir}")
     private String fileDir;
 
+    public String getFullPath(String storeFilename) {
+        return fileDir + storeFilename;
+    }
+
     public List<UploadFile> storeFiles(List<MultipartFile> multipartFiles) throws IOException {
 
         if (multipartFiles == null) {
@@ -33,6 +37,10 @@ public class FileStore {
     }
 
     public UploadFile storeFile(MultipartFile multipartFile) throws IOException {
+        if (multipartFile == null) {
+            return null;
+        }
+
         String originalFilename = multipartFile.getOriginalFilename();
         String storeFilename = getStoreFilename(originalFilename);
         multipartFile.transferTo(new File(fileDir + storeFilename));

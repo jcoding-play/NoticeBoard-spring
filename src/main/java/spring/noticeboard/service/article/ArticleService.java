@@ -34,10 +34,10 @@ public class ArticleService {
         String title = form.getTitle();
         String author = form.getAuthor();
         String content = form.getContent();
-        List<UploadFile> uploadFiles = fileStore.storeFiles(form.getMultipartFiles());
+        UploadFile attachFile = fileStore.storeFile(form.getAttachFile());
         LocalDateTime localDateTime = LocalDateTime.now();
 
-        Article article = new Article(createBy, title, author, content, uploadFiles, localDateTime);
+        Article article = new Article(createBy, title, author, content, attachFile, localDateTime);
         articleRepository.save(article);
         return article;
     }
@@ -58,7 +58,7 @@ public class ArticleService {
                     article.setAuthor(form.getAuthor());
                     article.setContent(form.getContent());
                     try {
-                        article.setUploadFiles(fileStore.storeFiles(form.getMultipartFiles()));
+                        article.setAttachFile(fileStore.storeFile(form.getAttachFile()));
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

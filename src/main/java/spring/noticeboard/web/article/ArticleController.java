@@ -2,13 +2,19 @@ package spring.noticeboard.web.article;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.UriUtils;
 import spring.noticeboard.domain.article.Article;
+import spring.noticeboard.file.FileStore;
 import spring.noticeboard.service.article.ArticleService;
 import spring.noticeboard.service.member.MemberService;
 import spring.noticeboard.web.SessionConst;
@@ -17,6 +23,8 @@ import spring.noticeboard.web.article.form.ArticleUpdateForm;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @Controller
@@ -26,6 +34,7 @@ public class ArticleController {
 
     private final ArticleService articleService;
     private final MemberService memberService;
+    private final FileStore fileStore;
 
     @GetMapping("/add")
     public String addArticle(@ModelAttribute("form") ArticleSaveForm form) {
@@ -95,5 +104,24 @@ public class ArticleController {
         articleService.delete(id);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/attach/{id}")
+    public ResponseEntity<Resource> downloadAttachFile(@PathVariable Long id) throws MalformedURLException {
+        Article article = articleService.findArticle(id).orElse(null);
+        if (article == null) {
+            return null;
+        }
+
+        String storeFilename = article.getAttachFile().getStoreFilename();
+        String uploadFilename = article.getAttachFile().getUploadFilename();
+
+        UrlResource resource = new UrlResource("file:" + fileStore.getFullPath(storeFilename));
+
+        String encodedUploadFilename = UriUtils.encode(uploadFilename, StandardCharsets.UTF_8);
+        String contentDisposition = "attachment; filename=\"" + encodedUploadFilename + "\"";
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
+                .body(resource);
     }
 }
