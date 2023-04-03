@@ -10,7 +10,7 @@ import spring.noticeboard.repository.member.MemberRepository;
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class TestData {
     private final ArticleRepository articleRepository;
