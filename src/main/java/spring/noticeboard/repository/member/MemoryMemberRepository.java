@@ -1,7 +1,6 @@
 package spring.noticeboard.repository.member;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
 import spring.noticeboard.domain.member.Member;
 
 import java.util.ArrayList;
