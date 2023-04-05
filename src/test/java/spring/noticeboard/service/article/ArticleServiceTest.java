@@ -30,7 +30,7 @@ class ArticleServiceTest {
     @BeforeEach
     void beforeEach() {
         memberRepository = new MemoryMemberRepository();
-        articleRepository = new MemoryArticleRepository();
+        articleRepository = new MemoryArticleRepository(fileStore);
         fileStore = new FileStore();
         memberService = new MemberService(memberRepository);
         articleService = new ArticleService(articleRepository, memberService, fileStore);

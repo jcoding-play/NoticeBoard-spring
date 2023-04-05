@@ -16,7 +16,7 @@
     </style>
 </head>
 <body>
-<header class="p-3 text-bg-dark">
+<header class="p-3 bg-dark">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
@@ -75,7 +75,7 @@
                 <td th:text="${articleStat.count}"></td>
                 <td><a th:href="@{/article/{id}(id=${article.id})}" th:text="${article.title}"></a></td>
                 <td th:text="${article.author}"></td>
-                <td th:text="${#temporals.format(article.localDateTime, 'yyyy-MM-dd HH:mm')}"></td>
+                <td th:text="${article.localDateTime}"></td>
             </tr>
             </tbody>
         </table>

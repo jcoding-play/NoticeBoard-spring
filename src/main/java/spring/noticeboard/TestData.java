@@ -9,8 +9,9 @@ import spring.noticeboard.repository.member.MemberRepository;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class TestData {
     private final ArticleRepository articleRepository;
@@ -21,8 +22,9 @@ public class TestData {
      */
     @PostConstruct
     public void init() {
-        Article article1 = new Article(null, "title1", "author1", "content1", null, LocalDateTime.now());
-        Article article2 = new Article(null, "title2", "author2", "content2", null, LocalDateTime.now());
+        String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        Article article1 = new Article(null, "title1", "author1", "content1", null, null, time);
+        Article article2 = new Article(null, "title2", "author2", "content2", null, null, time);
         articleRepository.save(article1);
         articleRepository.save(article2);
 

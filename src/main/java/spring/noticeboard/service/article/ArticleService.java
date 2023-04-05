@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,10 +35,12 @@ public class ArticleService {
         String title = form.getTitle();
         String author = form.getAuthor();
         String content = form.getContent();
-        UploadFile attachFile = fileStore.storeFile(form.getAttachFile());
-        LocalDateTime localDateTime = LocalDateTime.now();
+        UploadFile uploadFile = fileStore.storeFile(form.getAttachFile());
+        String uploadFilename = uploadFile.getUploadFilename();
+        String storeFilename = uploadFile.getStoreFilename();
+        String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-        Article article = new Article(createBy, title, author, content, attachFile, localDateTime);
+        Article article = new Article(createBy, title, author, content, uploadFilename, storeFilename, time);
         articleRepository.save(article);
         return article;
     }
@@ -51,18 +54,26 @@ public class ArticleService {
     }
 
     public void update(Long id, ArticleUpdateForm form) {
-
         findArticle(id)
                 .ifPresent(article -> {
                     article.setTitle(form.getTitle());
                     article.setAuthor(form.getAuthor());
                     article.setContent(form.getContent());
+
+                    UploadFile uploadFile;
                     try {
-                        article.setAttachFile(fileStore.storeFile(form.getAttachFile()));
+                        uploadFile = fileStore.storeFile(form.getAttachFile());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    article.setLocalDateTime(LocalDateTime.now());
+                    if (uploadFile != null) {
+                        article.setUploadFilename(uploadFile.getUploadFilename());
+                        article.setStoreFilename(uploadFile.getStoreFilename());
+                    }
+                    String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                    article.setLocalDateTime(time);
+
+                    articleRepository.update(id, article);
                 });
     }
 

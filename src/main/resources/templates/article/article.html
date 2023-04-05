@@ -18,7 +18,7 @@
     </style>
 </head>
 <body>
-<header class="p-3 text-bg-dark">
+<header class="p-3 bg-dark">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
@@ -74,7 +74,7 @@
         <label for="inputFile" class="col-sm-2 col-form-label"><strong>첨부 파일</strong></label>
         <div class="col-sm-10">
             <div class="custom-file" id="inputFile">
-                <a th:if="${article.attachFile}" th:href="|/article/attach/${article.id}|" th:text="${article.getAttachFile().getUploadFilename()}"></a>
+                <a th:if="${article.uploadFilename}" th:href="|/article/attach/${article.id}|" th:text="${article.getUploadFilename()}"></a>
             </div>
         </div>
     </div>

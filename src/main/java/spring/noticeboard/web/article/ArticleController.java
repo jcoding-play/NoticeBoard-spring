@@ -113,8 +113,8 @@ public class ArticleController {
             return null;
         }
 
-        String storeFilename = article.getAttachFile().getStoreFilename();
-        String uploadFilename = article.getAttachFile().getUploadFilename();
+        String storeFilename = article.getStoreFilename();
+        String uploadFilename = article.getUploadFilename();
 
         UrlResource resource = new UrlResource("file:" + fileStore.getFullPath(storeFilename));
 

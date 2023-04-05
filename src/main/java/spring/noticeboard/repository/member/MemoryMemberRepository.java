@@ -1,7 +1,6 @@
 package spring.noticeboard.repository.member;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
 import spring.noticeboard.domain.member.Member;
 
 import java.util.ArrayList;
@@ -12,7 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Slf4j
-@Repository
 public class MemoryMemberRepository implements MemberRepository {
 
     private static Map<Long, Member> store = new ConcurrentHashMap<>();

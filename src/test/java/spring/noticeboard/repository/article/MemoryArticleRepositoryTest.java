@@ -3,15 +3,18 @@ package spring.noticeboard.repository.article;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import spring.noticeboard.domain.article.Article;
+import spring.noticeboard.file.FileStore;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
 class MemoryArticleRepositoryTest {
 
-    MemoryArticleRepository articleRepository = new MemoryArticleRepository();
+    FileStore fileStore = new FileStore();
+    MemoryArticleRepository articleRepository = new MemoryArticleRepository(fileStore);
 
     @AfterEach
     void afterEach() {
@@ -20,7 +23,8 @@ class MemoryArticleRepositoryTest {
 
     @Test
     void save() {
-        Article article = new Article("tester", "test", "test", "test", null, LocalDateTime.now());
+        String format = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        Article article = new Article("tester", "test", "test", "test", null, null, format);
         articleRepository.save(article);
 
         Article findArticle = articleRepository.findById(article.getId()).get();
@@ -30,9 +34,10 @@ class MemoryArticleRepositoryTest {
 
     @Test
     void findAll() {
-        Article article1 = new Article("tester1", "test1", "test1", "test1", null, LocalDateTime.now());
+        String format = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        Article article1 = new Article("tester1", "test1", "test1", "test1", null, null, format);
         articleRepository.save(article1);
-        Article article2 = new Article("tester2", "test2", "test2", "test2", null, LocalDateTime.now());
+        Article article2 = new Article("tester2", "test2", "test2", "test2", null, null, format);
         articleRepository.save(article2);
 
         List<Article> result = articleRepository.findAll();
@@ -43,11 +48,13 @@ class MemoryArticleRepositoryTest {
 
     @Test
     void update() {
-        Article article = new Article("tester", "test", "test", "test", null, LocalDateTime.now());
+        String format = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        Article article = new Article("tester", "test", "test", "test", null, null, format);
         articleRepository.save(article);
         Long articleId = article.getId();
 
-        Article updateForm = new Article("update", "update", "update", "update", null, LocalDateTime.now());
+        format = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        Article updateForm = new Article("update", "update", "update", "update", "update", "update", format);
         articleRepository.update(articleId, updateForm);
         Article findArticle = articleRepository.findById(articleId).get();
 
@@ -58,7 +65,8 @@ class MemoryArticleRepositoryTest {
 
     @Test
     void delete() {
-        Article article = new Article("tester", "test", "test", "test", null, LocalDateTime.now());
+        String format = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        Article article = new Article("tester", "test", "test", "test", null, null, format);
         articleRepository.save(article);
 
         articleRepository.delete(article.getId());
