@@ -15,6 +15,9 @@ public class Article {
     private String storeFilename;
     private String localDateTime;
 
+    public Article() {
+    }
+
     public Article(String createBy, String title, String author, String content, String uploadFilename, String storeFilename, String localDateTime) {
         this.createBy = createBy;
         this.title = title;
