@@ -2,6 +2,7 @@ package spring.noticeboard.service.login;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import spring.noticeboard.domain.member.Member;
 import spring.noticeboard.repository.member.MemberRepository;
 
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class LoginService {
 

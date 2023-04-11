@@ -2,17 +2,25 @@ package spring.noticeboard.domain.article;
 
 import lombok.Data;
 
+import javax.persistence.*;
+
 @Data
+@Entity
 public class Article {
 
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "create_by")
     private String createBy;
     private String title;
     private String author;
     private String content;
+    @Column(name = "upload_filename")
     private String uploadFilename;
+    @Column(name = "store_filename")
     private String storeFilename;
+    @Column(name = "local_date_time")
     private String localDateTime;
 
     public Article() {

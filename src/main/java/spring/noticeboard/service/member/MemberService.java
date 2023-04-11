@@ -2,6 +2,7 @@ package spring.noticeboard.service.member;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import spring.noticeboard.domain.member.Member;
 import spring.noticeboard.repository.member.MemberRepository;
 
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class MemberService {
 
